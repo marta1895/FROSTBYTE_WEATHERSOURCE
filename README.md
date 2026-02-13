@@ -11,7 +11,7 @@ Analyze historical weather patterns to uncover seasonal trends, geographic diffe
 3. Table Structure Analysis (DESCRIBE TABLE)
 4. Initial Data Quality Checks
 5. Business Questions & SQL Analysis
-6. Visualization in Tableau
+6. Visualization in Python
 
 
 # 1. Data Source & Environment Setup
@@ -205,3 +205,283 @@ GROUP BY city, country, month
 ORDER BY city, month;
 ```
 <img width="1333" height="664" alt="Screenshot 2026-02-10 at 12 30 55 PM" src="https://github.com/user-attachments/assets/8733d9cb-4077-4701-ba04-f9f3f4bdbf83" />
+
+# 7. Visualization in Python
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+
+# 1. Which cities provide the most complete weather data for trend analysis in the last year?
+# Import .csv file
+df = pd.read_csv('/Users/martanarozhnyak/Desktop/business_questions_outputs/01_business_question.csv')
+print(df)
+```
+<img width="1102" height="196" alt="Screenshot 2026-02-12 at 2 08 59 PM" src="https://github.com/user-attachments/assets/9c8d85be-1ea2-46e2-8960-7ba655b1e68a" />
+
+```python
+# Creating a bar chart
+plt.figure()
+plt.bar(df["CITY_NAME"], df["RECORD_COUNT"])
+
+# Setting labels and title
+plt.xlabel("City")
+plt.ylabel("Weather Records Count")
+plt.title("Top 10 Locations with the Most Frequent Weather Records Over Time")
+
+plt.xticks(rotation=45)
+
+# Converting Y-axis values into millions format
+def format_millions(x, pos):
+    return f'{x/1_000_000:.1f}M'
+
+plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(format_millions))
+plt.tight_layout()
+plt.show()
+```
+<img width="1103" height="469" alt="Screenshot 2026-02-12 at 2 10 00 PM" src="https://github.com/user-attachments/assets/91ae7ed3-d78d-48e9-afe5-a7206f16ecf7" />
+
+```python
+# 2. How consistent is weather data coverage over time across the most monitored locations in the last 2 years?
+# Import .csv file
+df = pd.read_csv('/Users/martanarozhnyak/Desktop/business_questions_outputs/02_business_question.csv')
+print(df)
+```
+<img width="1096" height="372" alt="Screenshot 2026-02-13 at 10 03 33 AM" src="https://github.com/user-attachments/assets/5b3fd433-b8fe-4dc9-ac9d-534831bf0735" />
+
+```python
+import numpy as np
+
+# Pivot table to divide years into two separate columns: 2024 and 2025
+df_pivot = df.pivot(index="CITY_NAME", columns="OBS_YEAR", values="OBSERVATION_COUNT").reset_index()
+
+# Sorting by 2025 for better visibility
+df_pivot = df_pivot.sort_values(by=2025, ascending=False)
+
+df_pivot
+```
+<img width="1096" height="327" alt="Screenshot 2026-02-13 at 10 05 18 AM" src="https://github.com/user-attachments/assets/45113392-9619-420e-8877-d9eae8736444" />
+
+```python
+# Positions for bars
+x = np.arange(len(df_pivot))  # city positions
+width = 0.35 #setting the width of bars
+
+# Creating figure
+fig, ax = plt.subplots(figsize=(12,6))
+
+# Creating bars and setting colors
+bars1 = ax.bar(x - width/2, df_pivot[2024], width, label='2024', color='skyblue')
+bars2 = ax.bar(x + width/2, df_pivot[2025], width, label='2025', color='salmon')
+
+# Setting labels and title
+ax.set_xlabel("City")
+ax.set_ylabel("Weather Records Count")
+ax.set_title("Top 10 Cities Weather Records Comparison: 2024 vs 2025")
+ax.set_xticks(x)
+ax.set_xticklabels(df_pivot["CITY_NAME"], rotation=45)
+
+# Converting Y-axis values into millions format
+def format_millions(y, pos):
+    return f'{y/1_000_000:.1f}M'
+
+ax.yaxis.set_major_formatter(ticker.FuncFormatter(format_millions))
+
+# Legend for 2024 and 2025 color defining
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+```
+<img width="1102" height="550" alt="Screenshot 2026-02-13 at 10 06 11 AM" src="https://github.com/user-attachments/assets/9a4290a6-e2d2-4bdf-99c8-7d3f622a018b" />
+
+```python
+# 3. How do average monthly temperatures vary in high-activity cities in Europe and North America, and how could this influence seasonal menu planning in the last year?
+# 3.1 High-activity cities in Europe
+# Import .csv file
+df = pd.read_csv('/Users/martanarozhnyak/Desktop/business_questions_outputs/03.1_business_question.csv')
+print(df)
+```
+<img width="1096" height="259" alt="Screenshot 2026-02-13 at 10 07 24 AM" src="https://github.com/user-attachments/assets/55aca073-5835-4bfd-b2b2-3287037de30c" />
+
+```python
+# Getting unique EU cities
+cities = df["CITY"].unique()
+
+# Creating figure
+plt.figure(figsize=(12,6))
+
+# Plotting each city
+for city in cities:
+    city_data = df[df["CITY"] == city]
+    plt.plot(city_data["MONTH"], city_data["AVG_MONTHLY_TEMP_C"],
+             marker='o', label=city)
+
+# Setting labels and title
+plt.xlabel("Month")
+plt.ylabel("Average Monthly Temperature (°C)")
+plt.title("Monthly Temperature Change for High-Activity Cities in Europe")
+plt.xticks(range(1,13))  # ensuring X axis shows months 1–12
+plt.legend(title="City") # creating legend for cities for color defining
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+```
+<img width="1094" height="546" alt="Screenshot 2026-02-13 at 10 08 36 AM" src="https://github.com/user-attachments/assets/57ca7f1d-c889-4e2d-b41d-c1e71d98ce64" />
+
+```python
+# 3.1 High-activity cities in North America
+# Import .csv file
+df = pd.read_csv('/Users/martanarozhnyak/Desktop/business_questions_outputs/03.2_business_question.csv')
+print(df)
+```
+<img width="1096" height="252" alt="Screenshot 2026-02-13 at 10 09 30 AM" src="https://github.com/user-attachments/assets/a81a609b-a8b0-460a-bc4c-af5feb9c1853" />
+
+```python
+# Getting unique North America cities
+cities = df["CITY"].unique()
+
+# Creating figure
+plt.figure(figsize=(12,6))
+
+# Plotting each city
+for city in cities:
+    city_data = df[df["CITY"] == city]
+    plt.plot(city_data["MONTH"], city_data["AVG_MONTHLY_TEMP_C"],
+             marker='o', label=city)
+
+# Setting labels and title
+plt.xlabel("Month")
+plt.ylabel("Average Monthly Temperature (°C)")
+plt.title("Monthly Temperature Change for High-Activity Cities in North America")
+plt.xticks(range(1,13))  # ensuring X axis shows months 1–12
+plt.legend(title="City") # creating legend for cities for color defining
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+```
+<img width="1096" height="547" alt="Screenshot 2026-02-13 at 10 11 41 AM" src="https://github.com/user-attachments/assets/54664dfe-7d0c-4246-8d1a-7350a4add648" />
+
+```python
+# 4. Which locations experienced extreme winter conditions during this holiday season in the US, and how does it compare with the previous six years?
+# Import .csv file
+df = pd.read_csv('/Users/martanarozhnyak/Desktop/business_questions_outputs/04_business_question.csv')
+print(df)
+```
+<img width="1096" height="256" alt="Screenshot 2026-02-13 at 10 33 40 AM" src="https://github.com/user-attachments/assets/ba8f0b13-62a4-4c33-a94d-1c4ccc4b65b6" />
+
+```python
+# Pivot total snowfall to have a separate column for each year rather than rows
+df_pivot_snowfall = df.pivot(index="CITY_NAME", columns="MONTH_YEAR", values="TOTAL_SNOWFALL_CM").reset_index()
+
+df_pivot_snowfall
+```
+<img width="1096" height="324" alt="Screenshot 2026-02-13 at 10 34 53 AM" src="https://github.com/user-attachments/assets/5c462c6e-2fde-4361-bfac-26683b47520e" />
+
+```python
+# Plotting years
+years = ['2019-12', '2020-12', '2022-12', '2023-12', '2025-12'] 
+
+# Creating figure
+x = np.arange(len(df_pivot_snowfall))  # positions for cities
+width = 0.15  # setting the width of bars
+
+fig, ax = plt.subplots(figsize=(12,6))
+
+# Plotting bars for each year
+for i, year in enumerate(years):
+    ax.bar(x + i*width - width*(len(years)-1)/2, df_pivot_snowfall[year], width, label=str(year))
+
+# Setting labels and title
+ax.set_xlabel("City")
+ax.set_ylabel("Total Snowfall (cm)")
+ax.set_title("Top US Cities with Extreme Total Snowfall per Year (2019–2025)")
+ax.set_xticks(x)
+ax.set_xticklabels(df_pivot_snowfall["CITY_NAME"], rotation=45)
+
+
+
+ax.legend(title="Year")
+
+plt.tight_layout()
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
+```
+<img width="1095" height="543" alt="Screenshot 2026-02-13 at 10 35 30 AM" src="https://github.com/user-attachments/assets/33093ca0-72cb-4d38-9a86-b9dc18aec8ac" />
+
+```python
+# 5. Which European capital cities have the highest short-term precipitation risk that may reduce foot traffic over the next week?
+# Import .csv file
+df = pd.read_csv('/Users/martanarozhnyak/Desktop/business_questions_outputs/05_business_question.csv')
+print(df)
+```
+<img width="1090" height="133" alt="Screenshot 2026-02-13 at 10 36 09 AM" src="https://github.com/user-attachments/assets/02db8503-1a32-463f-92e2-fb17267b0e34" />
+
+```python
+# Creating figure
+plt.figure(figsize=(8, 5))
+
+bars = plt.barh(
+    df_sorted["CITY"],
+    df_sorted["AVG_PROBABILITY_PCT"]
+)
+
+plt.xlabel("Average Probability (%)")
+plt.title("European Capitals with the Highest Precipitation Next Week")
+
+# Adding value of possible precipitation risk (%) labels at the end of each bar
+for index, value in enumerate(df_sorted["AVG_PROBABILITY_PCT"]):
+    plt.text(value + 1, index, f"{value:.1f}%", ha="right", fontsize=9, color='black', fontweight="bold")
+
+plt.tight_layout()
+plt.show()
+```
+<img width="1091" height="496" alt="Screenshot 2026-02-13 at 10 36 42 AM" src="https://github.com/user-attachments/assets/decedf62-3664-49b8-8910-908937cf92eb" />
+
+```python
+# 6. Which cities across selected countries are forecasted to experience adverse weather conditions (rain, snow, strong wind, or extreme temperatures) over the next weekend?
+# Import .csv file
+df = pd.read_csv('/Users/martanarozhnyak/Desktop/business_questions_outputs/06_business_question.csv')
+df = df.head(15)
+df["CITY_COUNTRY"] = df["CITY_NAME"].astype(str) + ", " + df["COUNTRY"].astype(str)
+print(df)
+```
+```python
+# Creating figure
+plt.figure(figsize=(8, 5))
+
+# Setting color palette based on storm score
+colors = [
+    "darkred" if score > 10.10
+    else "firebrick" if score >= 10.00
+    else "indianred"
+    for score in df["STORM_SCORE"]
+]
+
+bars = plt.barh(
+    df["CITY_COUNTRY"],
+    df["STORM_SCORE"],
+    color=colors
+)
+
+plt.xlabel("Storm Score")
+plt.title("Location with Possible Adverse Weather Conditions Over Next Week")
+
+
+plt.tight_layout()
+plt.show()
+```
+<img width="1091" height="496" alt="Screenshot 2026-02-13 at 10 38 07 AM" src="https://github.com/user-attachments/assets/f891a316-f465-4330-a9eb-fc0c56174e25" />
+
+
+
+
+
+
+
+
+
+
