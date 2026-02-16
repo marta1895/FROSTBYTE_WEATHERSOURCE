@@ -8,11 +8,11 @@ Analyze historical weather patterns to uncover seasonal trends, geographic diffe
 ## Repository Structure
 ```text
 FROSTBYTE_WEATHERSOURCE/
-├── README.md                                  # Project overview, steps, and insights
+├── README.md                         # Project overview, steps, and insights
 ├── sql/
-│ └── Frostbyte_WeatherSource_Snowflake.sql    # SQL analysis queries from Snowflake
+│ └── Data_Analysis_Snowflake.sql     # SQL analysis queries from Snowflake
 └── notebooks/
-└── Frostbyte_WeatherSource.ipynb              # Python visualization
+└── Visualisation_Python.ipynb        # Python visualization
 ```
 
 ## Project Plan
