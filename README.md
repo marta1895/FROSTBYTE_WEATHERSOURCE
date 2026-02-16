@@ -21,7 +21,8 @@ FROSTBYTE_WEATHERSOURCE/
 3. Table Structure Analysis (DESCRIBE TABLE)
 4. Initial Data Quality Checks
 5. Business Questions & SQL Analysis
-6. Visualization in Python
+6. Visualization in Snowflake
+7. Visualization in Python
 
 
 # 1. Data Source & Environment Setup
@@ -216,8 +217,15 @@ ORDER BY city, month;
 ```
 <img width="1333" height="664" alt="Screenshot 2026-02-10 at 12 30 55 PM" src="https://github.com/user-attachments/assets/8733d9cb-4077-4701-ba04-f9f3f4bdbf83" />
 
-# 7. Visualization in Python
+# 6. Visualization in Snowflake
+I separated the final visualization stage into two parts. First, I created the charts directly in the Snowflake environment to demonstrate the platform’s flexibility and its ability to deliver quick insights.
 
+You can access the complete dashboard using the following link: https://app.snowflake.com/us-east-1/xoc29472/#/frostbyte_weathersource-d6aRI5tQV
+<img width="1697" height="879" alt="Screenshot 2026-02-16 at 3 05 46 PM" src="https://github.com/user-attachments/assets/5d7f80c3-c3ae-45aa-b7ce-6594d130bab6" />
+<img width="1697" height="772" alt="Screenshot 2026-02-16 at 3 15 07 PM" src="https://github.com/user-attachments/assets/e030c64d-f5f6-416c-9ad8-1723ea51d747" />
+
+# 7. Visualization in Python
+The second option, I made a visualisation in Python.
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
