@@ -6,13 +6,14 @@ In this project, the dataset is used to analyze weather trends over time and exp
 Analyze historical weather patterns to uncover seasonal trends, geographic differences, and temperature variability using Snowflake SQL, and present insights via Tableau dashboards.
 
 ## Repository Structure
+```text
 FROSTBYTE_WEATHERSOURCE/
 ├── README.md                                  # Project overview, steps, and insights
 ├── sql/
 │ └── Frostbyte_WeatherSource_Snowflake.sql    # SQL analysis queries from Snowflake
 └── notebooks/
 └── Frostbyte_WeatherSource.ipynb              # Python visualization
-
+```
 
 ## Project Plan:
 1. Data Source & Environment Setup (Snowflake)
