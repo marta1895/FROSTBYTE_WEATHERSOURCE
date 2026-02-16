@@ -12,7 +12,7 @@ FROSTBYTE_WEATHERSOURCE/
 ├── sql/
 │ └── Data_Analysis_Snowflake.sql     # SQL analysis queries from Snowflake
 └── notebooks/
-└── Visualisation_Python.ipynb        # Python visualization
+  └── Visualisation_Python.ipynb        # Python visualization
 ```
 
 ## Project Plan
