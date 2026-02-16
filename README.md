@@ -8,11 +8,12 @@ Analyze historical weather patterns to uncover seasonal trends, geographic diffe
 ## Repository Structure
 ```text
 FROSTBYTE_WEATHERSOURCE/
-├── README.md                         # Project overview, steps, and insights
+├── README.md                         # Project overview, methodology, and key insights
 ├── sql/
-│ └── Data_Analysis_Snowflake.sql     # SQL analysis queries from Snowflake
+│   ├── Data_Analysis_Snowflake.sql   # SQL analysis queries executed in Snowflake
+│   └── Visualization_Snowflake.pdf   # Snowflake dashboard visualizations
 └── notebooks/
-  └── Visualisation_Python.ipynb        # Python visualization
+    └── Visualization_Python.ipynb    # Python-based visualizations
 ```
 
 ## Project Plan
@@ -246,7 +247,7 @@ plt.bar(df["CITY_NAME"], df["RECORD_COUNT"])
 # Setting labels and title
 plt.xlabel("City")
 plt.ylabel("Weather Records Count")
-plt.title("Top 10 Locations with the Most Frequent Weather Records Over Time")
+plt.title("Top 10 Locations with the Most Weather Records in 2025")
 
 plt.xticks(rotation=45)
 
@@ -258,7 +259,7 @@ plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(format_millions))
 plt.tight_layout()
 plt.show()
 ```
-<img width="1103" height="469" alt="Screenshot 2026-02-12 at 2 10 00 PM" src="https://github.com/user-attachments/assets/91ae7ed3-d78d-48e9-afe5-a7206f16ecf7" />
+<img width="1033" height="469" alt="Screenshot 2026-02-16 at 3 48 27 PM" src="https://github.com/user-attachments/assets/3b743722-89ea-4fe6-99e7-7efe034f9b04" />
 
 ```python
 # 2. How consistent is weather data coverage over time across the most monitored locations in the last 2 years?
@@ -296,7 +297,7 @@ bars2 = ax.bar(x + width/2, df_pivot[2025], width, label='2025', color='salmon')
 # Setting labels and title
 ax.set_xlabel("City")
 ax.set_ylabel("Weather Records Count")
-ax.set_title("Top 10 Cities Weather Records Comparison: 2024 vs 2025")
+ax.set_title("Weather Data Coverage Consistency for Top 10 Locations (2024–2025)")
 ax.set_xticks(x)
 ax.set_xticklabels(df_pivot["CITY_NAME"], rotation=45)
 
@@ -312,7 +313,7 @@ ax.legend()
 plt.tight_layout()
 plt.show()
 ```
-<img width="1102" height="550" alt="Screenshot 2026-02-13 at 10 06 11 AM" src="https://github.com/user-attachments/assets/9a4290a6-e2d2-4bdf-99c8-7d3f622a018b" />
+<img width="1098" height="546" alt="Screenshot 2026-02-16 at 3 49 30 PM" src="https://github.com/user-attachments/assets/2bf776d7-94e4-4b35-a1d6-b42ce10d262f" />
 
 ```python
 # 3. How do average monthly temperatures vary in high-activity cities in Europe and North America, and how could this influence seasonal menu planning in the last year?
@@ -416,7 +417,7 @@ for i, year in enumerate(years):
 # Setting labels and title
 ax.set_xlabel("City")
 ax.set_ylabel("Total Snowfall (cm)")
-ax.set_title("Top US Cities with Extreme Total Snowfall per Year (2019–2025)")
+ax.set_title("Extreme Winter Conditions During the US Holiday Season:  Dec 2019 - Dec 2025 Comparison")
 ax.set_xticks(x)
 ax.set_xticklabels(df_pivot_snowfall["CITY_NAME"], rotation=45)
 
@@ -428,7 +429,7 @@ plt.tight_layout()
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.show()
 ```
-<img width="1095" height="543" alt="Screenshot 2026-02-13 at 10 35 30 AM" src="https://github.com/user-attachments/assets/33093ca0-72cb-4d38-9a86-b9dc18aec8ac" />
+<img width="1098" height="546" alt="Screenshot 2026-02-16 at 3 56 44 PM" src="https://github.com/user-attachments/assets/b47a07e9-8c46-4db5-be70-400039b6bfab" />
 
 ```python
 # 5. Which European capital cities have the highest short-term precipitation risk that may reduce foot traffic over the next week?
@@ -464,24 +465,25 @@ plt.show()
 # Import .csv file
 df = pd.read_csv('/Users/martanarozhnyak/Desktop/business_questions_outputs/06_business_question.csv')
 df = df.head(15)
-df["CITY_COUNTRY"] = df["CITY_NAME"].astype(str) + ", " + df["COUNTRY"].astype(str)
 print(df)
 ```
+
 ```python
-# Creating figure
+# Create figure
 plt.figure(figsize=(8, 5))
 
 # Setting color palette based on storm score
 colors = [
     "darkred" if score > 10.10
-    else "firebrick" if score >= 10.00
-    else "indianred"
-    for score in df["STORM_SCORE"]
+    else "firebrick" if score >= 4.1
+    else "indianred" if score >= 4.0
+    else "lightcoral"
+    for score in df["STORM_SCORE_1_TO_10"]
 ]
 
 bars = plt.barh(
     df["CITY_COUNTRY"],
-    df["STORM_SCORE"],
+    df["STORM_SCORE_1_TO_10"],
     color=colors
 )
 
@@ -492,7 +494,7 @@ plt.title("Location with Possible Adverse Weather Conditions Over Next Week")
 plt.tight_layout()
 plt.show()
 ```
-<img width="1091" height="496" alt="Screenshot 2026-02-13 at 10 38 07 AM" src="https://github.com/user-attachments/assets/f891a316-f465-4330-a9eb-fc0c56174e25" />
+<img width="1076" height="503" alt="Screenshot 2026-02-16 at 3 58 34 PM" src="https://github.com/user-attachments/assets/f7e01faf-bd24-42ff-ac1b-de5b8f9f7cc1" />
 
 
 
