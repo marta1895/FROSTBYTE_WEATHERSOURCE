@@ -5,6 +5,15 @@ Weather Source LLC: frostbyte is a shared weather database from the Snowflake Ma
 In this project, the dataset is used to analyze weather trends over time and explore how environmental factors can be joined with business data for deeper insights.
 Analyze historical weather patterns to uncover seasonal trends, geographic differences, and temperature variability using Snowflake SQL, and present insights via Tableau dashboards.
 
+## Repository Structure
+FROSTBYTE_WEATHERSOURCE/
+├── README.md                                  # Project overview, steps, and insights
+├── sql/
+│ └── Frostbyte_WeatherSource_Snowflake.sql    # SQL analysis queries from Snowflake
+└── notebooks/
+└── Frostbyte_WeatherSource.ipynb              # Python visualization
+
+
 ## Project Plan:
 1. Data Source & Environment Setup (Snowflake)
 2. Dataset Discovery (Schemas, Tables)
