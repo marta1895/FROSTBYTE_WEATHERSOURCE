@@ -11,10 +11,9 @@ FROSTBYTE_WEATHERSOURCE/
 ├── README.md                             # Project overview, methodology, and key insights
 ├── sql/
 │   ├── Data_Analysis_Snowflake.sql       # SQL analysis queries executed in Snowflake
-│   └── Visualization_Snowflake_pt_1.pdf
-│   └── Visualization_Snowflake_pt_2.pdf  # Snowflake dashboard visualizations
+│   └── Visualisation_Snowflake.pdf       # Snowflake dashboard visualizations
 └── notebooks/
-    └── Visualization_Python.ipynb        # Python-based visualizations
+    └── Visualisation_Python.ipynb        # Python-based visualizations
 ```
 
 ## Project Plan
