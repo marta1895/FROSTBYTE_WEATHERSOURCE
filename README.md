@@ -1,9 +1,9 @@
 # Project Objective
 Weather Source LLC: frostbyte is a shared weather database from the Snowflake Marketplace that provides real-world historical weather data, including temperature, snowfall, precipitation, and snow depth by location and date.
 
-## Goal:
+## Goal
 In this project, the dataset is used to analyze weather trends over time and explore how environmental factors can be joined with business data for deeper insights.
-Analyze historical weather patterns to uncover seasonal trends, geographic differences, and temperature variability using Snowflake SQL, and present insights via Tableau dashboards.
+Analyze historical weather patterns to uncover seasonal trends, geographic differences, and temperature variability using Snowflake SQL, and present insights via Python dashboards.
 
 ## Repository Structure
 ```text
@@ -15,7 +15,7 @@ FROSTBYTE_WEATHERSOURCE/
 └── Frostbyte_WeatherSource.ipynb              # Python visualization
 ```
 
-## Project Plan:
+## Project Plan
 1. Data Source & Environment Setup (Snowflake)
 2. Dataset Discovery (Schemas, Tables)
 3. Table Structure Analysis (DESCRIBE TABLE)
@@ -35,7 +35,7 @@ FROSTBYTE_WEATHERSOURCE/
 
 <img width="900" height="650" alt="image" src="https://github.com/user-attachments/assets/e3f4ec1b-5878-4199-a51a-94269c953c62" />
 
-## Setting up the enviroment
+## Setting up the environment
 
 After the database installation and before querying, we set the role, warehouse, database and schema context to ensure queries run in the correct dataset environment.
 
@@ -68,7 +68,7 @@ DESCRIBE TABLE ONPOINT_ID.forecast_day;
 ```
 <img width="1333" height="672" alt="Screenshot 2026-02-10 at 12 08 01 PM" src="https://github.com/user-attachments/assets/f7df2233-f613-414a-99c3-8ddc74b6ed56" />
 
-Additionaly, I used the simple SELECT all (*) to see the view of the table:
+Additionally, I used the simple SELECT all (*) to see the view of the table:
 ```sql
 SELECT *
 FROM WEATHER_SOURCE_LLC_FROSTBYTE.ONPOINT_ID.forecast_day
@@ -85,7 +85,7 @@ SELECT COUNT(*) AS rows_nmbr FROM onpoint_id.forecast_day;
 ```
 <img width="1334" height="144" alt="Screenshot 2026-02-10 at 12 06 55 PM" src="https://github.com/user-attachments/assets/2edaa50c-6da6-40bb-92e4-8bf55f37a770" />
 
-Because the table contains 59 columns and a large number of rows, null checks were limited to key geographic fields that are most likely to be used in following analysis
+Because the table contains 59 columns and a large number of rows, null checks were limited to key geographic fields that are most likely to be used in the following analysis
 
 ```sql
 -- Check non-null values for selected key columns
@@ -101,7 +101,7 @@ FROM onpoint_id.forecast_day;
 ## (1) Which cities provide the most complete weather data for trend analysis in the last year?
 Before building long-term weather trend models, we want to identify cities with the most complete and reliable weather records over the past year, so our analyses and forecasts are based on consistent data rather than gaps or missing observations
 ```sql
--- Find top 10 locations have the most frequent weather records over 2025
+-- Find top 10 locations that have the most frequent weather records over 2025
 SELECT 
     city_name,
     country,
@@ -119,7 +119,7 @@ We want to understand whether our most frequently monitored locations have stabl
 ```sql
 -- Analyze weather data coverage consistency over the last 2 years for the top 10 country–city combinations by total observations
 WITH yearly_counts AS (
-    -- First filtering the necessary date range and aggregate the yearly observation counts, this step will reduce data volume and improves performance
+    -- First filtering the necessary date range and aggregate the yearly observation counts. This step will reduce data volume and improve performance
     SELECT
         country,
         city_name,
@@ -140,7 +140,7 @@ top_locations AS (
     ORDER BY SUM(yearly_obs) DESC
     LIMIT 10
 )
--- Joining back to yearly data to get the observation trend per year
+-- Joining back to the yearly data to get the observation trend per year
 SELECT
     y.country,
     y.city_name,
@@ -155,13 +155,13 @@ ORDER BY y.country, y.city_name, y.obs_year;
 ## (3) How do average monthly temperatures vary in high-activity cities in Europe and North America, and how could this influence seasonal menu planning in the last year?
 Our food truck operates in multiple high-traffic cities across Europe and North America. By analyzing how monthly temperatures vary in these locations, we can adjust seasonal menus (hot vs. cold items) and staffing plans to better match local climate conditions
 
-I divided this investogation into two separate queries to reduce data volume and improve performance; the results from both queries I will compore in the further visualization step
+I divided this investigation into two separate queries to reduce data volume and improve performance; the results from both queries I will compare in the further visualization step
 ```sql
 -- Finding the average monthly temperature change in the high-activity cities of Europe region in 2025
 SELECT DISTINCT
     CASE -- Normalizing city names to handle multiple variations
         WHEN city_name ILIKE '%paris%' THEN 'Paris'
-        WHEN city_name ILIKE '%nice%' AND country = 'FR' THEN 'Nice' --added one more filter to ensure that the results only will be for Nice, FR since there is Nice locations in PL and GB as well
+        WHEN city_name ILIKE '%nice%' AND country = 'FR' THEN 'Nice' --added one more filter to ensure that the results will only be for Nice, FR since there are Nice locations in PL and GB as well
         WHEN city_name ILIKE '%berlin%' THEN 'Berlin'
         WHEN city_name ILIKE '%hamburg%' THEN 'Hamburg'
         WHEN city_name ILIKE '%munich%' 
@@ -190,7 +190,7 @@ ORDER BY city, month;
 <img width="1333" height="697" alt="Screenshot 2026-02-10 at 12 28 31 PM" src="https://github.com/user-attachments/assets/e96f91eb-77d2-462e-9246-8770df39e4a8" />
 
 ```sql
--- Finding the average monthly temperature change in the high-activity cities of North America region in 2025
+-- Finding the average monthly temperature change in the high-activity cities of the North America region in 2025
 SELECT DISTINCT
     CASE 
         WHEN city_name ILIKE '%denver%' THEN 'Denver'
